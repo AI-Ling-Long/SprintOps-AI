@@ -1,16 +1,16 @@
 const loginView = document.getElementById("login-view");
 const signupView = document.getElementById("signup-view");
-const dashboardView = document.getElementById("dashboard-view");
+const dashboardView = document.getElementById("dashboard-view");//dashboard
 
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
-const addUserForm = document.getElementById("add-user-form");
+// const addUserForm = document.getElementById("add-user-form");//dashboard
 
 const loginMessage = document.getElementById("login-message");
 const signupMessage = document.getElementById("signup-message");
-const dashboardMessage = document.getElementById("dashboard-message");
-const dashboardGreeting = document.getElementById("dashboard-greeting");
-const usersTableBody = document.getElementById("users-table-body");
+const dashboardMessage = document.getElementById("dashboard-message");//dashboard
+const dashboardGreeting = document.getElementById("dashboard-greeting");//dashboard
+// const usersTableBody = document.getElementById("users-table-body");//dashboard
 
 const passwordInput = document.getElementById("password");
 const togglePasswordBtn = document.getElementById("toggle-password");
@@ -61,37 +61,37 @@ function validateUserPayload({ name, email, password }) {
   return null;
 }
 
-async function loadUsers() {
-  const api = ensureApi();
-  const users = await api.getUsers();
+// async function loadUsers() {
+//   const api = ensureApi();
+//   const users = await api.getUsers();
 
-  if (!users.length) {
-    usersTableBody.innerHTML =
-      '<tr><td colspan="4" class="empty-row">No users yet.</td></tr>';
-    return;
-  }
+//   if (!users.length) {
+//     usersTableBody.innerHTML =
+//       '<tr><td colspan="4" class="empty-row">No users yet.</td></tr>';
+//     return;
+//   }
 
-  usersTableBody.innerHTML = users
-    .map(
-      (user) => `
-        <tr>
-          <td>${user.id}</td>
-          <td>${escapeHtml(user.name || "—")}</td>
-          <td>${escapeHtml(user.email || "—")}</td>
-          <td>
-            <button type="button" class="btn btn-danger btn-small" data-delete-id="${user.id}">
-              Delete
-            </button>
-          </td>
-        </tr>
-      `
-    )
-    .join("");
+//   usersTableBody.innerHTML = users
+//     .map(
+//       (user) => `
+//         <tr>
+//           <td>${user.id}</td>
+//           <td>${escapeHtml(user.name || "—")}</td>
+//           <td>${escapeHtml(user.email || "—")}</td>
+//           <td>
+//             <button type="button" class="btn btn-danger btn-small" data-delete-id="${user.id}">
+//               Delete
+//             </button>
+//           </td>
+//         </tr>
+//       `
+//     )
+//     .join("");
 
-  usersTableBody.querySelectorAll("[data-delete-id]").forEach((button) => {
-    button.addEventListener("click", () => handleDeleteUser(button.dataset.deleteId));
-  });
-}
+//   usersTableBody.querySelectorAll("[data-delete-id]").forEach((button) => {
+//     button.addEventListener("click", () => handleDeleteUser(button.dataset.deleteId));
+//   });
+// }
 
 function escapeHtml(value) {
   return String(value)
@@ -107,25 +107,25 @@ async function openDashboard(user) {
   clearMessage(dashboardMessage);
   showView("dashboard");
 
-  try {
-    await loadUsers();
-  } catch (error) {
-    showMessage(dashboardMessage, error.message, true);
-  }
+  // try {
+  //   await loadUsers();
+  // } catch (error) {
+  //   showMessage(dashboardMessage, error.message, true);
+  // }
 }
 
-async function handleDeleteUser(id) {
-  clearMessage(dashboardMessage);
+// async function handleDeleteUser(id) {
+//   clearMessage(dashboardMessage);
 
-  try {
-    const api = ensureApi();
-    await api.deleteUser(id);
-    showMessage(dashboardMessage, "User deleted.", false);
-    await loadUsers();
-  } catch (error) {
-    showMessage(dashboardMessage, error.message, true);
-  }
-}
+//   try {
+//     const api = ensureApi();
+//     await api.deleteUser(id);
+//     showMessage(dashboardMessage, "User deleted.", false);
+//     await loadUsers();
+//   } catch (error) {
+//     showMessage(dashboardMessage, error.message, true);
+//   }
+// }
 
 togglePasswordBtn.addEventListener("click", () => {
   const isHidden = passwordInput.type === "password";
@@ -207,35 +207,35 @@ signupForm.addEventListener("submit", async (event) => {
   }
 });
 
-addUserForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  clearMessage(dashboardMessage);
+// addUserForm.addEventListener("submit", async (event) => {
+//   event.preventDefault();
+//   clearMessage(dashboardMessage);
 
-  if (!addUserForm.reportValidity()) return;
+//   if (!addUserForm.reportValidity()) return;
 
-  const formData = new FormData(addUserForm);
-  const payload = {
-    name: readFormField(formData, "name"),
-    email: readFormField(formData, "email"),
-    password: readFormField(formData, "password"),
-  };
+//   const formData = new FormData(addUserForm);
+//   const payload = {
+//     name: readFormField(formData, "name"),
+//     email: readFormField(formData, "email"),
+//     password: readFormField(formData, "password"),
+//   };
 
-  const validationError = validateUserPayload(payload);
-  if (validationError) {
-    showMessage(dashboardMessage, validationError, true);
-    return;
-  }
+//   const validationError = validateUserPayload(payload);
+//   if (validationError) {
+//     showMessage(dashboardMessage, validationError, true);
+//     return;
+//   }
 
-  try {
-    const api = ensureApi();
-    await api.createUser(payload);
-    addUserForm.reset();
-    showMessage(dashboardMessage, "User added.", false);
-    await loadUsers();
-  } catch (error) {
-    showMessage(dashboardMessage, error.message, true);
-  }
-});
+//   try {
+//     const api = ensureApi();
+//     await api.createUser(payload);
+//     addUserForm.reset();
+//     showMessage(dashboardMessage, "User added.", false);
+//     await loadUsers();
+//   } catch (error) {
+//     showMessage(dashboardMessage, error.message, true);
+//   }
+// });
 
 document.querySelectorAll('a[href="#"]:not(#show-signup):not(#show-login)').forEach((link) => {
   link.addEventListener("click", (event) => event.preventDefault());
