@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { isEmail } from "validator";
 import { scryptSync, randomBytes, timingSafeEqual } from "crypto";
 import { eq } from "drizzle-orm";
 import { db } from "./db.js";
@@ -114,11 +115,16 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Name, email, and password are required" });
     }
 
+    const cleanEmail = String(email).trim().toLowerCase();
+    if (!isEmail(cleanEmail)) {
+      return res.status(400).json({ error: "Invalid email format" });
+    }
+
     const [created] = await db
       .insert(users)
       .values({
         name: String(name).trim(),
-        email: String(email).trim().toLowerCase(),
+        email: cleanEmail,
         passwordHash: hashPassword(String(password)),
       })
       .returning();

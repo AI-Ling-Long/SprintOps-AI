@@ -44,6 +44,23 @@ function ensureApi() {
   return window.jarvis.api;
 }
 
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim());
+}
+
+function readFormField(formData, fieldName) {
+  return String(formData.get(fieldName) ?? "").trim();
+}
+
+function validateUserPayload({ name, email, password }) {
+  if (!name) return "Name is required.";
+  if (!email) return "Email is required.";
+  if (!isValidEmail(email)) return "Enter a valid email address.";
+  if (!password) return "Password is required.";
+  if (password.length < 6) return "Password must be at least 6 characters.";
+  return null;
+}
+
 async function loadUsers() {
   const api = ensureApi();
   const users = await api.getUsers();
@@ -164,15 +181,24 @@ signupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearMessage(signupMessage);
 
+  if (!signupForm.reportValidity()) return;
+
   const formData = new FormData(signupForm);
+  const payload = {
+    name: readFormField(formData, "name"),
+    email: readFormField(formData, "email"),
+    password: readFormField(formData, "password"),
+  };
+
+  const validationError = validateUserPayload(payload);
+  if (validationError) {
+    showMessage(signupMessage, validationError, true);
+    return;
+  }
 
   try {
     const api = ensureApi();
-    await api.createUser({
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
+    await api.createUser(payload);
     showMessage(signupMessage, "Account created. You can log in now.", false);
     signupForm.reset();
     setTimeout(() => showView("login"), 1200);
@@ -185,15 +211,24 @@ addUserForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearMessage(dashboardMessage);
 
+  if (!addUserForm.reportValidity()) return;
+
   const formData = new FormData(addUserForm);
+  const payload = {
+    name: readFormField(formData, "name"),
+    email: readFormField(formData, "email"),
+    password: readFormField(formData, "password"),
+  };
+
+  const validationError = validateUserPayload(payload);
+  if (validationError) {
+    showMessage(dashboardMessage, validationError, true);
+    return;
+  }
 
   try {
     const api = ensureApi();
-    await api.createUser({
-      name: formData.get("name"),
-      email: formData.get("email"),
-      password: formData.get("password"),
-    });
+    await api.createUser(payload);
     addUserForm.reset();
     showMessage(dashboardMessage, "User added.", false);
     await loadUsers();

@@ -18,6 +18,14 @@ function startServer() {
   serverProcess.on("error", (error) => {
     console.error("Failed to start API server:", error);
   });
+
+  serverProcess.on("exit", (code) => {
+    if (code !== 0 && code !== null) {
+      console.error(
+        `API server exited with code ${code}. If port 3000 is already in use, stop the old server and restart the app.`
+      );
+    }
+  });
 }
 
 function createWindow() {

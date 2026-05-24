@@ -11,7 +11,20 @@ async function request(path, options = {}) {
     ...options,
   });
 
-  const data = await response.json().catch(() => ({}));
+  const raw = await response.text();
+  let data = {};
+
+  if (raw) {
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      throw new Error(
+        response.ok
+          ? "Unexpected response from server"
+          : raw.slice(0, 120) || `Request failed (${response.status})`
+      );
+    }
+  }
 
   if (!response.ok) {
     throw new Error(data.error || `Request failed (${response.status})`);
