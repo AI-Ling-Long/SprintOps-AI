@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' http://localhost:3000"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WorkTracker</title>
+    <title>Jarvis-AI</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -22,7 +22,7 @@
                 <rect x="20" y="4" width="5" height="21" rx="1" fill="#374151" />
               </svg>
             </div>
-            <h1 class="brand-name">WorkTracker</h1>
+            <h1 class="brand-name">Jarvis-AI</h1>
           </div>
           <p class="brand-tagline">Track your work. Achieve your goals.</p>
 
@@ -87,11 +87,13 @@
       </aside>
 
       <main class="login-panel">
-        <div class="login-card">
+        <div id="login-view" class="login-card">
           <header class="login-header">
             <h2>Welcome Back</h2>
             <p>Log in to continue to your dashboard.</p>
           </header>
+
+          <p id="login-message" class="form-message" hidden></p>
 
           <form id="login-form" class="login-form" novalidate>
             <label class="field">
@@ -160,8 +162,98 @@
           </div>
 
           <p class="signup-prompt">
-            Don't have an account? <a href="#" class="link">Sign up</a>
+            Don't have an account? <a href="#" id="show-signup" class="link">Sign up</a>
           </p>
+        </div>
+
+        <div id="signup-view" class="login-card" hidden>
+          <header class="login-header">
+            <h2>Create Account</h2>
+            <p>Sign up to start tracking your work.</p>
+          </header>
+
+          <p id="signup-message" class="form-message" hidden></p>
+
+          <form id="signup-form" class="login-form" novalidate>
+            <label class="field">
+              <span class="field-label">Name</span>
+              <span class="input-wrap">
+                <input type="text" name="name" placeholder="Enter your name" autocomplete="name" required />
+              </span>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Email</span>
+              <span class="input-wrap">
+                <input type="email" name="email" placeholder="Enter your email" autocomplete="email" required />
+              </span>
+            </label>
+
+            <label class="field">
+              <span class="field-label">Password</span>
+              <span class="input-wrap">
+                <input type="password" name="password" placeholder="Create a password" autocomplete="new-password" required />
+              </span>
+            </label>
+
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </form>
+
+          <p class="signup-prompt">
+            Already have an account? <a href="#" id="show-login" class="link">Log in</a>
+          </p>
+        </div>
+
+        <div id="dashboard-view" class="login-card dashboard-card" hidden>
+          <header class="login-header dashboard-header">
+            <div>
+              <h2>Users</h2>
+              <p id="dashboard-greeting">Manage accounts in the database.</p>
+            </div>
+            <button type="button" id="logout-btn" class="btn btn-secondary">Log out</button>
+          </header>
+
+          <p id="dashboard-message" class="form-message" hidden></p>
+
+          <form id="add-user-form" class="login-form add-user-form" novalidate>
+            <label class="field">
+              <span class="field-label">Name</span>
+              <span class="input-wrap">
+                <input type="text" name="name" placeholder="Full name" required />
+              </span>
+            </label>
+            <label class="field">
+              <span class="field-label">Email</span>
+              <span class="input-wrap">
+                <input type="email" name="email" placeholder="Email address" required />
+              </span>
+            </label>
+            <label class="field">
+              <span class="field-label">Password</span>
+              <span class="input-wrap">
+                <input type="password" name="password" placeholder="Password" required />
+              </span>
+            </label>
+            <button type="submit" class="btn btn-primary">Add User</button>
+          </form>
+
+          <div class="users-table-wrap">
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body">
+                <tr>
+                  <td colspan="4" class="empty-row">Loading users…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </div>

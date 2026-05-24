@@ -1,0 +1,5 @@
+{
+  "name": "jarvis-server",
+  "private": true,
+  "type": "module"
+}

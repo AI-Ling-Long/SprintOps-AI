@@ -373,6 +373,96 @@ a:hover {
   font-weight: 600;
 }
 
+.form-message {
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+}
+
+.form-message.error {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.form-message.success {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.dashboard-card {
+  max-width: 520px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.btn-secondary {
+  padding: 0.45rem 0.85rem;
+  background: #fff;
+  border: 1px solid var(--border-input);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+}
+
+.btn-danger {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: #dc2626;
+}
+
+.btn-small {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.add-user-form {
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.users-table-wrap {
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.users-table th,
+.users-table td {
+  padding: 0.65rem 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.users-table th {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.empty-row {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 1.25rem 0.5rem !important;
+}
+
 @media (max-width: 820px) {
   .login-page {
     flex-direction: column;

@@ -1,7 +1,24 @@
 const { app, BrowserWindow } = require("electron");
 const path = require("path");
+const { spawn } = require("child_process");
 
 const isDev = !app.isPackaged;
+let serverProcess = null;
+
+function startServer() {
+  const serverPath = path.join(__dirname, "..", "server", "server.js");
+
+  serverProcess = spawn("node", [serverPath], {
+    cwd: path.join(__dirname, "..", "server"),
+    env: { ...process.env },
+    stdio: "inherit",
+    windowsHide: true,
+  });
+
+  serverProcess.on("error", (error) => {
+    console.error("Failed to start API server:", error);
+  });
+}
 
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -30,17 +47,24 @@ function createWindow() {
 }
 
 app.whenReady().then(() => {
-  createWindow();
+  startServer();
+  setTimeout(createWindow, 500);
+});
 
-  app.on("activate", () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
+app.on("activate", () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
+    createWindow();
+  }
 });
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
+  }
+});
+
+app.on("will-quit", () => {
+  if (serverProcess && !serverProcess.killed) {
+    serverProcess.kill();
   }
 });
