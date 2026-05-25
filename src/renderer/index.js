@@ -6,6 +6,8 @@ const dashboardView = document.getElementById("dashboard-view");
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
 const rememberInput = loginForm.elements.remember;
+const githubLoginBtn = document.getElementById("github-login-btn");
+const googleLoginBtn = document.getElementById("google-login-btn");
 
 const loginMessage = document.getElementById("login-message");
 const signupMessage = document.getElementById("signup-message");
@@ -14,9 +16,23 @@ const passwordInput = document.getElementById("password");
 const togglePasswordBtn = document.getElementById("toggle-password");
 const iconShow = togglePasswordBtn.querySelector(".icon-show");
 const iconHide = togglePasswordBtn.querySelector(".icon-hide");
+const signupPasswordInput = document.getElementById("signup-password");
+const toggleSignupPasswordBtn = document.getElementById("toggle-signup-password");
 
 let currentUser = null;
 const rememberedUserKey = "jarvis.rememberedUser";
+const oauthButtons = {
+  github: githubLoginBtn,
+  google: googleLoginBtn,
+};
+const oauthButtonLabels = {
+  github: "GitHub",
+  google: "Google",
+};
+const oauthButtonContent = {
+  github: githubLoginBtn.innerHTML,
+  google: googleLoginBtn.innerHTML,
+};
 
 function showMessage(element, text, isError = false) {
   element.textContent = text;
@@ -97,13 +113,15 @@ function getRememberedUser() {
   }
 }
 
-function handleTogglePassword() {
-  const isHidden = passwordInput.type === "password";
+function togglePasswordVisibility(input, button) {
+  const isHidden = input.type === "password";
+  const showIcon = button.querySelector(".icon-show");
+  const hideIcon = button.querySelector(".icon-hide");
 
-  passwordInput.type = isHidden ? "text" : "password";
-  iconShow.hidden = isHidden;
-  iconHide.hidden = !isHidden;
-  togglePasswordBtn.setAttribute(
+  input.type = isHidden ? "text" : "password";
+  showIcon.hidden = isHidden;
+  hideIcon.hidden = !isHidden;
+  button.setAttribute(
     "aria-label",
     isHidden ? "Hide password" : "Show password"
   );
@@ -123,11 +141,17 @@ function showLogin(event) {
   showView("login");
 }
 
-function logout() {
+async function logout() {
   currentUser = null;
   forgetUser();
   loginForm.reset();
   showView("login");
+
+  try {
+    await ensureApi().signOut?.();
+  } catch (error) {
+    console.warn("Supabase sign-out failed", error);
+  }
 }
 
 async function submitLogin(event) {
@@ -186,12 +210,53 @@ async function submitSignup(event) {
   try {
     const api = ensureApi();
 
-    await api.createUser(payload);
-    showMessage(signupMessage, "Account created. You can log in now.", false);
+    const createdUser = await api.createUser(payload);
+    const message = createdUser.requiresEmailConfirmation
+      ? "Account created. Check your email to confirm it, then log in."
+      : "Account created. You can log in now.";
+
+    showMessage(signupMessage, message, false);
     signupForm.reset();
-    setTimeout(() => showView("login"), 1200);
+
+    if (!createdUser.requiresEmailConfirmation) {
+      setTimeout(() => showView("login"), 1200);
+    }
   } catch (error) {
     showMessage(signupMessage, error.message, true);
+  }
+}
+
+function setOAuthButtonsDisabled(isDisabled, activeProvider) {
+  Object.entries(oauthButtons).forEach(([provider, button]) => {
+    button.disabled = isDisabled;
+
+    if (isDisabled && provider === activeProvider) {
+      button.textContent = `Waiting for ${oauthButtonLabels[provider]}...`;
+    }
+
+    if (!isDisabled) {
+      button.innerHTML = oauthButtonContent[provider];
+    }
+  });
+}
+
+async function signInWithOAuth(provider) {
+  clearMessage(loginMessage);
+
+  try {
+    const api = ensureApi();
+    setOAuthButtonsDisabled(true, provider);
+
+    const user = provider === "github"
+      ? await api.signInWithGitHub()
+      : await api.signInWithGoogle();
+
+    rememberUser(user);
+    await openDashboard(user);
+  } catch (error) {
+    showMessage(loginMessage, error.message, true);
+  } finally {
+    setOAuthButtonsDisabled(false);
   }
 }
 
@@ -203,10 +268,13 @@ function preventPlaceholderLinks() {
     });
 }
 
-togglePasswordBtn.addEventListener("click", handleTogglePassword);
+togglePasswordBtn.addEventListener("click", () => togglePasswordVisibility(passwordInput, togglePasswordBtn));
+toggleSignupPasswordBtn.addEventListener("click", () => togglePasswordVisibility(signupPasswordInput, toggleSignupPasswordBtn));
 document.getElementById("show-signup").addEventListener("click", showSignup);
 document.getElementById("show-login").addEventListener("click", showLogin);
 document.getElementById("logout-btn").addEventListener("click", logout);
+githubLoginBtn.addEventListener("click", () => signInWithOAuth("github"));
+googleLoginBtn.addEventListener("click", () => signInWithOAuth("google"));
 loginForm.addEventListener("submit", submitLogin);
 signupForm.addEventListener("submit", submitSignup);
 

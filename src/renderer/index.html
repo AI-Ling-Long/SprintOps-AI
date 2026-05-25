@@ -4,10 +4,10 @@
     <meta charset="UTF-8" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' http://localhost:3000"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' http://localhost:3000 http://127.0.0.1:3000"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jarvis-AI</title>
+    <title>SprintOps AI</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="dashboard.css" />
   </head>
@@ -25,7 +25,7 @@
                 <rect x="20" y="4" width="5" height="21" rx="1" fill="#374151" />
               </svg>
             </div>
-            <h1 class="brand-name">Jarvis-AI</h1>
+            <h1 class="brand-name">SprintOps AI</h1>
           </div>
 
           <p class="brand-tagline">Track your work. Achieve your goals.</p>
@@ -152,13 +152,13 @@
           <div class="divider"><span>or</span></div>
 
           <div class="social-buttons">
-            <button type="button" class="btn btn-social">
+            <button type="button" id="github-login-btn" class="btn btn-social">
               <svg class="social-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.06-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.35-1.76-1.35-1.76-1.1-.75.08-.74.08-.74 1.22.09 1.86 1.25 1.86 1.25 1.08 1.85 2.83 1.32 3.52 1.01.11-.78.42-1.32.76-1.62-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.01 2.04.14 3 .4 2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.62-5.49 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.89-.01 3.28 0 .32.22.69.83.57A12 12 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
               </svg>
               Continue with GitHub
             </button>
-            <button type="button" class="btn btn-social">
+            <button type="button" id="google-login-btn" class="btn btn-social">
               <svg class="social-icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
@@ -201,7 +201,19 @@
             <label class="field">
               <span class="field-label">Password</span>
               <span class="input-wrap">
-                <input type="password" name="password" placeholder="Create a password" autocomplete="new-password" required />
+                <input id="signup-password" type="password" name="password" placeholder="Create a password" autocomplete="new-password" required />
+                <button type="button" id="toggle-signup-password" class="toggle-password" aria-label="Show password">
+                  <svg class="icon-show" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg class="icon-hide" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" hidden>
+                    <path d="M3 3l18 18" />
+                    <path d="M10.6 10.6a3 3 0 0 0 4.2 4.2" />
+                    <path d="M6.7 6.7C4.6 8.1 3 10.2 2 12s3.5 7 10 7c1.8 0 3.4-.4 4.8-1.1" />
+                    <path d="M17.3 17.3C19.4 15.9 21 13.8 22 12s-3.5-7-10-7c-1.8 0-3.4.4-4.8 1.1" />
+                  </svg>
+                </button>
               </span>
             </label>
 
@@ -219,7 +231,7 @@
       <aside class="dash-sidebar">
         <div class="dash-logo">
           <span class="dash-logo-icon">J</span>
-          <span>Jarvis-AI</span>
+          <span>SprintOps AI</span>
         </div>
 
         <nav class="dash-nav" aria-label="Dashboard">
@@ -268,9 +280,9 @@
           <section class="setup-grid">
             <article class="dash-card setup-card">
               <span class="setup-step">01</span>
-              <h3>Connect a repository</h3>
-              <p>Choose the project folder Jarvis should monitor for commits and code activity.</p>
-              <button type="button" class="btn-outline">Connect Git</button>
+              <h3>Connect GitHub</h3>
+              <p>Authorize GitHub so SprintOps AI can prepare repository activity tracking.</p>
+              <button type="button" class="btn-outline">Connect GitHub</button>
             </article>
 
             <article class="dash-card setup-card">
@@ -283,7 +295,7 @@
             <article class="dash-card setup-card">
               <span class="setup-step">03</span>
               <h3>Enable AI feedback</h3>
-              <p>Once activity exists, Jarvis can summarize patterns and suggest improvements.</p>
+              <p>Once activity exists, SprintOps AI can summarize patterns and suggest improvements.</p>
               <button type="button" class="btn-outline">Configure AI</button>
             </article>
           </section>

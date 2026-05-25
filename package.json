@@ -1,8 +1,11 @@
 {
-  "name": "jarvis-ai",
+  "name": "sprintops-ai",
   "version": "0.1.0",
-  "description": "Jarvis AI desktop assistant",
+  "description": "SprintOps AI desktop assistant",
   "main": "src/main.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "electron .",
     "dev": "electron . --inspect",
@@ -11,7 +14,7 @@
   },
   "keywords": [
     "electron",
-    "jarvis",
+    "sprintops",
     "ai"
   ],
   "author": "",
@@ -21,11 +24,12 @@
     "electron": "^35.0.0"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.1.0",
+    "@supabase/supabase-js": "^2.106.1",
     "cors": "^2.8.5",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "express": "^5.1.0",
+    "pg": "^8.16.3",
     "validator": "^13.15.35"
   }
 }

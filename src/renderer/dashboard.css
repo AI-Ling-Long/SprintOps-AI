@@ -725,6 +725,57 @@
   color: #b91c1c;
 }
 
+.github-connection {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 86px;
+  padding: 0.9rem;
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(37, 99, 235, 0.06), transparent 48%),
+    #fbfdff;
+}
+
+.github-connection-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #111827;
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.github-connection div:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.github-connection strong,
+.github-connection span,
+.github-connection small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.github-connection strong {
+  font-size: 0.92rem;
+}
+
+.github-connection span,
+.github-connection small {
+  color: #64748b;
+  font-size: 0.78rem;
+}
+
 .feedback-summary {
   min-height: 154px;
   padding: 1rem;

@@ -1,6 +1,7 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
-const API_BASE = "http://localhost:3000/api/v1";
+const API_BASE = "http://127.0.0.1:3000/api/v1";
+const ACCOUNTS_PATH = "/accounts";
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
@@ -36,21 +37,24 @@ async function request(path, options = {}) {
 contextBridge.exposeInMainWorld("jarvis", {
   platform: process.platform,
   api: {
-    getUsers: () => request("/users"),
-    getUser: (id) => request(`/users/${id}`),
+    getUsers: () => request(ACCOUNTS_PATH),
+    getUser: (id) => request(`${ACCOUNTS_PATH}/${id}`),
     createUser: (payload) =>
-      request("/users", {
+      request(ACCOUNTS_PATH, {
         method: "POST",
         body: JSON.stringify(payload),
       }),
     deleteUser: (id) =>
-      request(`/users/${id}`, {
+      request(`${ACCOUNTS_PATH}/${id}`, {
         method: "DELETE",
       }),
     login: (payload) =>
-      request("/users/login", {
+      request(`${ACCOUNTS_PATH}/login`, {
         method: "POST",
         body: JSON.stringify(payload),
       }),
+    signInWithGoogle: () => ipcRenderer.invoke("auth:google"),
+    signInWithGitHub: () => ipcRenderer.invoke("auth:github"),
+    signOut: () => ipcRenderer.invoke("auth:signout"),
   },
 });

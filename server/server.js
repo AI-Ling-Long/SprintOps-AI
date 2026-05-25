@@ -1,15 +1,39 @@
 import express from "express";
 import cors from "cors";
 import validator from "validator";
-import { scryptSync, randomBytes, timingSafeEqual } from "crypto";
-import { eq } from "drizzle-orm";
-import { db } from "./db.js";
-import { users } from "./schema.js";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import { createClient } from "@supabase/supabase-js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const { isEmail } = validator;
 
 const app = express();
 const port = process.env.PORT || 3000;
+const hasSupabaseAuth = Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_ANON_KEY);
+const appBaseUrl = process.env.APP_BASE_URL || `http://127.0.0.1:${port}`;
+const emailConfirmationHelp =
+  "Turn off email confirmation in Supabase Auth during development, wait for the email rate limit to clear, or configure custom SMTP.";
+const supabase = hasSupabaseAuth
+  ? createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+      },
+    })
+  : null;
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
 app.use(cors());
 app.use(express.json());
@@ -19,53 +43,154 @@ app.use((req, res, next) => {
   next();
 });
 
-function hashPassword(password) {
-  const salt = randomBytes(16).toString("hex");
-  const hash = scryptSync(password, salt, 64).toString("hex");
-  return `${salt}:${hash}`;
-}
+function publicSupabaseUser(user) {
+  const metadata = user.user_metadata || {};
 
-function verifyPassword(password, storedHash) {
-  const [salt, hash] = storedHash.split(":");
-  if (!salt || !hash) return false;
-
-  const candidate = scryptSync(password, salt, 64).toString("hex");
-  const hashBuffer = Buffer.from(hash, "hex");
-  const candidateBuffer = Buffer.from(candidate, "hex");
-
-  if (hashBuffer.length !== candidateBuffer.length) return false;
-  return timingSafeEqual(hashBuffer, candidateBuffer);
-}
-
-function publicUser(user) {
   return {
     id: user.id,
-    name: user.name,
+    name: metadata.name || metadata.full_name || user.email?.split("@")[0] || "User",
     email: user.email,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    createdAt: user.created_at,
+    updatedAt: user.updated_at,
   };
+}
+
+function isInvalidCredentialsError(error) {
+  const message = String(error?.message || "").toLowerCase();
+  const code = String(error?.code || "").toLowerCase();
+
+  return (
+    code === "invalid_credentials" ||
+    code === "invalid_grant" ||
+    message.includes("invalid login credentials") ||
+    message.includes("invalid email or password")
+  );
+}
+
+function isEmailNotConfirmedError(error) {
+  const message = String(error?.message || "").toLowerCase();
+  const code = String(error?.code || "").toLowerCase();
+
+  return (
+    code === "email_not_confirmed" ||
+    message.includes("email not confirmed") ||
+    message.includes("email_not_confirmed")
+  );
+}
+
+function isConfirmationEmailError(error) {
+  const message = String(error?.message || "").toLowerCase();
+  const code = String(error?.code || "").toLowerCase();
+
+  return (
+    code === "over_email_send_rate_limit" ||
+    message.includes("rate limit") ||
+    message.includes("error sending confirmation email") ||
+    message.includes("error sending email")
+  );
+}
+
+function publicPendingSupabaseUser({ name, email }) {
+  return {
+    id: email,
+    name: name || email.split("@")[0],
+    email,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+}
+
+function renderAuthResultPage({ title, message, status = "success" }) {
+  const accent = status === "success" ? "#2563eb" : "#b91c1c";
+  const softAccent = status === "success" ? "#dbeafe" : "#fee2e2";
+  const safeTitle = escapeHtml(title);
+  const safeMessage = escapeHtml(message);
+
+  return `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>${safeTitle} | SprintOps AI</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; }
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #111827;
+        background:
+          radial-gradient(circle at top left, rgba(37, 99, 235, 0.14), transparent 34rem),
+          linear-gradient(135deg, #f8fafc 0%, #ffffff 62%);
+      }
+      main {
+        width: min(100%, 460px);
+        padding: 34px;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.94);
+        box-shadow: 0 20px 55px rgba(15, 23, 42, 0.1);
+        text-align: center;
+      }
+      .logo {
+        width: 52px;
+        height: 52px;
+        margin: 0 auto 18px;
+        display: grid;
+        place-items: center;
+        border-radius: 16px;
+        background: #111827;
+        color: #ffffff;
+        font-weight: 800;
+      }
+      .status {
+        width: 46px;
+        height: 46px;
+        margin: 0 auto 18px;
+        display: grid;
+        place-items: center;
+        border-radius: 999px;
+        background: ${softAccent};
+        color: ${accent};
+        font-size: 24px;
+        font-weight: 800;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: 1.55rem;
+      }
+      p {
+        margin: 0;
+        color: #64748b;
+        line-height: 1.55;
+      }
+      .hint {
+        margin-top: 18px;
+        padding-top: 18px;
+        border-top: 1px solid #e2e8f0;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="logo">S</div>
+      <div class="status">${status === "success" ? "OK" : "!"}</div>
+      <h1>${safeTitle}</h1>
+      <p>${safeMessage}</p>
+      <p class="hint">You can close this browser tab and return to SprintOps AI.</p>
+    </main>
+  </body>
+</html>`;
 }
 
 const router = express.Router();
 
 router.get("/", async (_req, res) => {
-  try {
-    const rows = await db
-      .select({
-        id: users.id,
-        name: users.name,
-        email: users.email,
-        createdAt: users.createdAt,
-        updatedAt: users.updatedAt,
-      })
-      .from(users);
-
-    res.json(rows);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch users" });
-  }
+  res.status(501).json({ error: "Account listing is not available with Supabase client auth." });
 });
 
 router.post("/login", async (req, res) => {
@@ -76,16 +201,34 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Email and password are required" });
     }
 
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, String(email).trim().toLowerCase()));
+    const cleanEmail = String(email).trim().toLowerCase();
 
-    if (!user || !verifyPassword(String(password), user.passwordHash)) {
-      return res.status(401).json({ error: "Invalid email or password" });
+    if (!hasSupabaseAuth) {
+      return res.status(500).json({ error: "Supabase auth is not configured." });
     }
 
-    res.json(publicUser(user));
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: cleanEmail,
+      password: String(password),
+    });
+
+    if (!error && data.user) {
+      return res.json(publicSupabaseUser(data.user));
+    }
+
+    if (error && isEmailNotConfirmedError(error)) {
+      return res.status(403).json({
+        error: "Email not confirmed. Check your inbox for the confirmation link, then log in again.",
+      });
+    }
+
+    if (error && !isInvalidCredentialsError(error)) {
+      return res.status(401).json({ error: error.message });
+    }
+
+    if (error || !data.user) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Login failed" });
@@ -93,20 +236,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  try {
-    const id = Number(req.params.id);
-    if (Number.isNaN(id)) {
-      return res.status(400).json({ error: "Invalid user id" });
-    }
-
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    if (!user) return res.status(404).json({ error: "User not found" });
-
-    res.json(publicUser(user));
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to fetch user" });
-  }
+  res.status(501).json({ error: "Account lookup is not available with Supabase client auth." });
 });
 
 router.post("/", async (req, res) => {
@@ -122,49 +252,81 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ error: "Invalid email format" });
     }
 
-    const [created] = await db
-      .insert(users)
-      .values({
-        name: String(name).trim(),
-        email: cleanEmail,
-        passwordHash: hashPassword(String(password)),
-      })
-      .returning();
-
-    res.status(201).json(publicUser(created));
-  } catch (error) {
-    if (error.code === "23505") {
-      return res.status(409).json({ error: "Email already exists" });
+    if (!hasSupabaseAuth) {
+      return res.status(500).json({ error: "Supabase auth is not configured." });
     }
 
+    const { data, error } = await supabase.auth.signUp({
+      email: cleanEmail,
+      password: String(password),
+      options: {
+        emailRedirectTo: `${appBaseUrl}/auth/confirmed`,
+        data: {
+          name: String(name).trim(),
+        },
+      },
+    });
+
+    if (error) {
+      if (isConfirmationEmailError(error)) {
+        return res.status(429).json({
+          error: `Supabase could not send the confirmation email. ${emailConfirmationHelp}`,
+        });
+      }
+
+      const status = /already|registered/i.test(error.message) ? 409 : 400;
+      return res.status(status).json({ error: error.message });
+    }
+
+    if (!data.user) {
+      return res.status(201).json({
+        ...publicPendingSupabaseUser({
+          name: String(name).trim(),
+          email: cleanEmail,
+        }),
+        requiresEmailConfirmation: true,
+      });
+    }
+
+    return res.status(201).json({
+      ...publicSupabaseUser(data.user),
+      requiresEmailConfirmation: !data.session,
+    });
+  } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to create user" });
+    res.status(500).json({ error: "Failed to create account" });
   }
 });
 
 router.delete("/:id", async (req, res) => {
-  try {
-    const id = Number(req.params.id);
-    if (Number.isNaN(id)) {
-      return res.status(400).json({ error: "Invalid user id" });
-    }
-
-    const [deleted] = await db.delete(users).where(eq(users.id, id)).returning();
-    if (!deleted) return res.status(404).json({ error: "User not found" });
-
-    res.json({ message: "User deleted", user: publicUser(deleted) });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to delete user" });
-  }
+  res.status(501).json({ error: "Account deletion is not available with Supabase client auth." });
 });
 
 app.get("/", (_req, res) => {
-  res.send("Jarvis API is running");
+  res.send("SprintOps AI API is running");
 });
 
-app.use("/api/v1/users", router);
+app.get("/auth/confirmed", (req, res) => {
+  const error = req.query.error_description || req.query.error;
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  if (error) {
+    return res
+      .status(400)
+      .send(renderAuthResultPage({
+        title: "Confirmation failed",
+        message: String(error),
+        status: "error",
+      }));
+  }
+
+  res.send(renderAuthResultPage({
+    title: "Email confirmed",
+    message: "Your SprintOps AI account is ready. Return to the app and log in with your email and password.",
+  }));
+});
+
+app.use("/api/v1/accounts", router);
+
+app.listen(port, "127.0.0.1", () => {
+  console.log(`Server running on http://127.0.0.1:${port}`);
 });

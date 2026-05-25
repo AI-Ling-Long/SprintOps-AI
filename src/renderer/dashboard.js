@@ -1,9 +1,9 @@
 const EMPTY_STATES = {
   "git-activity-empty": {
-    label: "No repository connected",
-    text: "Git activity will appear here after you connect a project folder.",
-    action: "Connect Git",
-    actionType: "connect-git",
+    label: "GitHub not connected",
+    text: "Connect GitHub so SprintOps AI can prepare repository activity tracking.",
+    action: "Connect GitHub",
+    actionType: "connect-github",
   },
   "goals-empty": {
     label: "No goals yet",
@@ -13,7 +13,7 @@ const EMPTY_STATES = {
   },
   "feedback-empty": {
     label: "Waiting for real activity",
-    text: "AI feedback will be generated after Jarvis has commits, goals, or task history to review.",
+    text: "AI feedback will be generated after SprintOps AI has commits, goals, or task history to review.",
     action: "Configure AI",
     actionType: "configure-ai",
   },
@@ -45,6 +45,7 @@ function createDefaultWorkspaceState() {
     goals: [],
     projects: [],
     repositories: [],
+    githubConnection: null,
     aiEnabled: false,
     checkIns: [],
     preferences: {
@@ -78,6 +79,20 @@ function loadWorkspaceState() {
 
 function saveWorkspaceState() {
   localStorage.setItem(getStateKey(), JSON.stringify(workspaceState));
+}
+
+function syncGitHubConnectionFromUser() {
+  if (workspaceState.githubConnection || dashboardUser?.provider !== "github") return;
+
+  workspaceState.githubConnection = {
+    id: dashboardUser.id,
+    name: dashboardUser.name,
+    email: dashboardUser.email,
+    avatarUrl: dashboardUser.avatarUrl,
+    connectedAt: new Date().toISOString(),
+  };
+
+  saveWorkspaceState();
 }
 
 function createId(prefix) {
@@ -218,6 +233,26 @@ function renderProjectList() {
 }
 
 function renderRepositoryList() {
+  if (!workspaceState.githubConnection) {
+    return `<div class="empty-state" id="git-activity-empty"></div>`;
+  }
+
+  if (!workspaceState.repositories.length) {
+    const connection = workspaceState.githubConnection;
+
+    return `
+      <div class="github-connection">
+        <div class="github-connection-icon" aria-hidden="true">GH</div>
+        <div>
+          <strong>${escapeHtml(connection.name || connection.email || "GitHub connected")}</strong>
+          <span>${escapeHtml(connection.email || "Connected with GitHub")}</span>
+          <small>Connected ${formatShortDate(connection.connectedAt)}</small>
+        </div>
+        <button type="button" class="entity-remove" data-action="disconnect-github">Disconnect</button>
+      </div>
+    `;
+  }
+
   return renderEntityList(workspaceState.repositories, "git-activity-empty", (repository) => `
     <article class="entity-item">
       <span>
@@ -285,9 +320,11 @@ function renderDashboardPage() {
     <section class="setup-grid">
       <article class="dash-card setup-card">
         <span class="setup-step">01</span>
-        <h3>Connect a repository</h3>
-        <p>Choose the project folder Jarvis should monitor for commits and code activity.</p>
-        <button type="button" class="btn-outline" data-action="connect-git">Connect Git</button>
+        <h3>Connect GitHub</h3>
+        <p>Authorize GitHub so SprintOps AI can prepare repository activity tracking.</p>
+        <button type="button" class="btn-outline" data-action="connect-github">
+          ${workspaceState.githubConnection ? "Reconnect GitHub" : "Connect GitHub"}
+        </button>
       </article>
 
       <article class="dash-card setup-card">
@@ -300,7 +337,7 @@ function renderDashboardPage() {
       <article class="dash-card setup-card">
         <span class="setup-step">03</span>
         <h3>Enable AI feedback</h3>
-        <p>Once activity exists, Jarvis can summarize patterns and suggest improvements.</p>
+        <p>Once activity exists, SprintOps AI can summarize patterns and suggest improvements.</p>
         <button type="button" class="btn-outline" data-action="configure-ai">Configure AI</button>
       </article>
     </section>
@@ -421,7 +458,7 @@ function renderProjectsPage() {
           <h3>Project Template</h3>
         </div>
         <div class="project-template">
-          <div><span>Name</span><strong>${escapeHtml(latestProject?.name || "Jarvis-AI")}</strong></div>
+          <div><span>Name</span><strong>${escapeHtml(latestProject?.name || "SprintOps AI")}</strong></div>
           <div><span>Status</span><strong>${escapeHtml(latestProject?.status || "Planning")}</strong></div>
           <div><span>Linked repository</span><strong>${workspaceState.repositories.length ? escapeHtml(workspaceState.repositories[0].name) : "Not connected"}</strong></div>
           <div><span>Next milestone</span><strong>${workspaceState.goals[0] ? escapeHtml(workspaceState.goals[0].title) : "Define first goal"}</strong></div>
@@ -443,27 +480,30 @@ function renderProjectsPage() {
 
 function renderGitPage() {
   const latestRepository = workspaceState.repositories.at(-1);
+  const githubConnection = workspaceState.githubConnection;
 
   return `
     <section class="page-hero dash-card">
       <div>
         <span class="page-badge">Repository signal</span>
         <h2>Git Activity</h2>
-        <p>Monitor commits, branch movement, and code momentum from connected folders.</p>
+        <p>${githubConnection ? `Connected to GitHub as ${escapeHtml(githubConnection.name || githubConnection.email)}.` : "Connect GitHub to start preparing repository activity tracking."}</p>
       </div>
-      <button type="button" class="btn-outline" data-action="connect-git">Connect Git</button>
+      <button type="button" class="btn-outline" data-action="connect-github">
+        ${githubConnection ? "Reconnect GitHub" : "Connect GitHub"}
+      </button>
     </section>
 
     <section class="metric-grid">
       <article class="dash-card metric-card">
-        <span>Commits today</span>
-        <strong>${workspaceState.repositories.length}</strong>
-        <p>${workspaceState.repositories.length ? "Connected repositories" : "No repository connected"}</p>
+        <span>GitHub status</span>
+        <strong>${githubConnection ? "Connected" : "Not connected"}</strong>
+        <p>${githubConnection ? `Since ${formatShortDate(githubConnection.connectedAt)}` : "Authorize GitHub first"}</p>
       </article>
       <article class="dash-card metric-card">
-        <span>Changed files</span>
-        <strong>${workspaceState.goals.length}</strong>
-        <p>Tracked work items</p>
+        <span>Tracked repositories</span>
+        <strong>${workspaceState.repositories.length}</strong>
+        <p>${workspaceState.repositories.length ? "Repository records" : "Ready after GitHub sync"}</p>
       </article>
       <article class="dash-card metric-card">
         <span>Active branch</span>
@@ -475,7 +515,7 @@ function renderGitPage() {
     <section class="dash-row-2">
       <article class="dash-card template-panel">
         <div class="card-header">
-          <h3>Activity Feed</h3>
+          <h3>GitHub Connection</h3>
         </div>
         ${renderRepositoryList()}
       </article>
@@ -484,9 +524,9 @@ function renderGitPage() {
           <h3>Repository Health</h3>
         </div>
         <ul class="template-list">
-          <li><strong>Commit cadence</strong><span>Measures consistency once commits are available.</span></li>
-          <li><strong>Change size</strong><span>Highlights large or risky bursts of work.</span></li>
-          <li><strong>Branch hygiene</strong><span>Tracks stale branches and uncommitted changes.</span></li>
+          <li><strong>Authorization</strong><span>${githubConnection ? "GitHub access is authorized through Supabase." : "Connect GitHub to authorize repository access."}</span></li>
+          <li><strong>Commit cadence</strong><span>Measures consistency once repository sync is added.</span></li>
+          <li><strong>Branch hygiene</strong><span>Tracks stale branches and uncommitted changes after repositories are synced.</span></li>
         </ul>
       </article>
     </section>
@@ -708,18 +748,28 @@ function addProject() {
   renderPage("projects");
 }
 
-function connectGit() {
-  const name = window.prompt("Repository name");
-  if (!name?.trim()) return;
+async function connectGitHub() {
+  try {
+    const api = window.jarvis?.api;
+    if (!api?.signInWithGitHub) {
+      throw new Error("GitHub auth bridge unavailable. Restart the app.");
+    }
 
-  workspaceState.repositories.unshift({
-    id: createId("repo"),
-    name: name.trim(),
-    branch: "main",
-    connectedAt: new Date().toISOString(),
-  });
-  saveWorkspaceState();
-  renderPage("git");
+    const githubUser = await api.signInWithGitHub();
+
+    workspaceState.githubConnection = {
+      id: githubUser.id,
+      name: githubUser.name,
+      email: githubUser.email,
+      avatarUrl: githubUser.avatarUrl,
+      connectedAt: new Date().toISOString(),
+    };
+
+    saveWorkspaceState();
+    renderPage("git");
+  } catch (error) {
+    window.alert(error.message);
+  }
 }
 
 function configureAi() {
@@ -746,7 +796,7 @@ function exportReport() {
     checkIns: workspaceState.checkIns,
   };
 
-  console.info("Jarvis workspace report", report);
+  console.info("SprintOps AI workspace report", report);
   window.alert("Report data was written to the developer console.");
 }
 
@@ -782,7 +832,7 @@ function handleDashboardAction(event) {
 
   if (action === "add-goal") addGoal();
   if (action === "add-project") addProject();
-  if (action === "connect-git") connectGit();
+  if (action === "connect-github") connectGitHub();
   if (action === "configure-ai") configureAi();
   if (action === "log-progress") logProgress();
   if (action === "export-report") exportReport();
@@ -811,6 +861,13 @@ function handleDashboardAction(event) {
 
   if (action === "delete-repository") {
     workspaceState.repositories = workspaceState.repositories.filter((item) => item.id !== id);
+    saveWorkspaceState();
+    renderPage(activePage);
+  }
+
+  if (action === "disconnect-github") {
+    workspaceState.githubConnection = null;
+    workspaceState.repositories = [];
     saveWorkspaceState();
     renderPage(activePage);
   }
@@ -891,6 +948,7 @@ function syncUserChrome() {
 function initDashboard(user) {
   dashboardUser = user;
   loadWorkspaceState();
+  syncGitHubConnectionFromUser();
   syncUserChrome();
 
   bindDashboardNavigation();
