@@ -10,11 +10,11 @@ let mainWindow = null;
 let supabaseClientPromise = null;
 
 const serverDir = path.join(__dirname, "..", "server");
+dotenv.config({ path: path.join(serverDir, ".env") });
+
 const authCallbackPort = Number(process.env.SUPABASE_AUTH_CALLBACK_PORT || 39177);
 const authCallbackPath = "/auth/callback";
 const authCallbackUrl = `http://127.0.0.1:${authCallbackPort}${authCallbackPath}`;
-
-dotenv.config({ path: path.join(serverDir, ".env") });
 
 function createMemoryStorage() {
   const store = new Map();

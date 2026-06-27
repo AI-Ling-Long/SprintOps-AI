@@ -90,6 +90,23 @@ function isConfirmationEmailError(error) {
   );
 }
 
+function isAuthServiceUnavailableError(error) {
+  const causeCode = String(error?.cause?.code || "").toUpperCase();
+  const message = String(error?.message || "").toLowerCase();
+
+  return (
+    ["ENOTFOUND", "ECONNREFUSED", "ECONNRESET", "ETIMEDOUT"].includes(causeCode) ||
+    message.includes("fetch failed")
+  );
+}
+
+function authServiceUnavailableResponse(res) {
+  return res.status(503).json({
+    error:
+      "Authentication service is unavailable. Check SUPABASE_URL in server/.env and confirm the Supabase project is active.",
+  });
+}
+
 function publicPendingSupabaseUser({ name, email }) {
   return {
     id: email,
@@ -222,6 +239,10 @@ router.post("/login", async (req, res) => {
       });
     }
 
+    if (error && isAuthServiceUnavailableError(error)) {
+      return authServiceUnavailableResponse(res);
+    }
+
     if (error && !isInvalidCredentialsError(error)) {
       return res.status(401).json({ error: error.message });
     }
@@ -231,6 +252,11 @@ router.post("/login", async (req, res) => {
     }
   } catch (error) {
     console.error(error);
+
+    if (isAuthServiceUnavailableError(error)) {
+      return authServiceUnavailableResponse(res);
+    }
+
     res.status(500).json({ error: "Login failed" });
   }
 });
@@ -268,6 +294,10 @@ router.post("/", async (req, res) => {
     });
 
     if (error) {
+      if (isAuthServiceUnavailableError(error)) {
+        return authServiceUnavailableResponse(res);
+      }
+
       if (isConfirmationEmailError(error)) {
         return res.status(429).json({
           error: `Supabase could not send the confirmation email. ${emailConfirmationHelp}`,
@@ -294,6 +324,11 @@ router.post("/", async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+
+    if (isAuthServiceUnavailableError(error)) {
+      return authServiceUnavailableResponse(res);
+    }
+
     res.status(500).json({ error: "Failed to create account" });
   }
 });

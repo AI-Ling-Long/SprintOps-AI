@@ -67,8 +67,9 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value).trim());
 }
 
-function readFormField(formData, fieldName) {
-  return String(formData.get(fieldName) ?? "").trim();
+function readFormField(formData, fieldName, { trim = true } = {}) {
+  const value = String(formData.get(fieldName) ?? "");
+  return trim ? value.trim() : value;
 }
 
 function validateUserPayload({ name, email, password }) {
@@ -163,7 +164,7 @@ async function submitLogin(event) {
   const formData = new FormData(loginForm);
   const payload = {
     email: readFormField(formData, "email"),
-    password: readFormField(formData, "password"),
+    password: readFormField(formData, "password", { trim: false }),
   };
 
   if (!isValidEmail(payload.email)) {
@@ -197,7 +198,7 @@ async function submitSignup(event) {
   const payload = {
     name: readFormField(formData, "name"),
     email: readFormField(formData, "email"),
-    password: readFormField(formData, "password"),
+    password: readFormField(formData, "password", { trim: false }),
   };
 
   const validationError = validateUserPayload(payload);
