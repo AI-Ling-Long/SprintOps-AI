@@ -1,0 +1,18 @@
+# Phase 9 - Production readiness
+
+--------------------------------------------------------------------------
+TYPE     : USER STORY US9.001 : UTORID : NotStarted
+NAME     : CI, packaging, and deployment
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : CI checks, Electron packaging, and hosted deployment support.
+SO THAT  : SprintOps can be shipped safely.
+
+TYPE     : USER STORY US9.002 : UTORID : NotStarted
+NAME     : Security, export, and deletion verification
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Security, backup, export, and deletion workflows verified.
+SO THAT  : The system is production ready.

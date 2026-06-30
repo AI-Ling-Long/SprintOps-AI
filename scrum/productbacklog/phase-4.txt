@@ -1,0 +1,58 @@
+# Phase 4 - Local repository integration
+
+--------------------------------------------------------------------------
+PHASE 4.1 - Explicit folder selection
+--------------------------------------------------------------------------
+TYPE     : USER STORY US4.001 : UTORID : NotStarted
+NAME     : Repository folder picker
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : An Electron-native folder picker.
+SO THAT  : Repositories are selected explicitly.
+
+TYPE     : USER STORY US4.002 : UTORID : NotStarted
+NAME     : Repository validation and consent preview
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : The app to validate a worktree and preview synchronized metadata.
+SO THAT  : Users know what will be collected.
+
+--------------------------------------------------------------------------
+PHASE 4.2 - Git metadata reader
+--------------------------------------------------------------------------
+TYPE     : USER STORY US4.003 : UTORID : NotStarted
+NAME     : Repository root and branch metadata
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Root, branch, and HEAD metadata from the selected repository.
+SO THAT  : SprintOps can relate local work to sprint items.
+
+TYPE     : USER STORY US4.004 : UTORID : NotStarted
+NAME     : Allowed commit metadata ingestion
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Commit hashes, authorship, timestamps, and messages only.
+SO THAT  : No source code or diffs are uploaded.
+
+--------------------------------------------------------------------------
+PHASE 4.3 - Repository mapping
+--------------------------------------------------------------------------
+TYPE     : USER STORY US4.005 : UTORID : NotStarted
+NAME     : Map local repositories to projects
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Device-specific repository mapping stored separately from provider identity.
+SO THAT  : Local repositories are associated with the right project.
+
+TYPE     : USER STORY US4.006 : UTORID : NotStarted
+NAME     : Sync status and repository errors
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Last sync timestamps and actionable errors.
+SO THAT  : Repository integration can be debugged.

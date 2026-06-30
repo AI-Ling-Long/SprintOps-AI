@@ -1,0 +1,77 @@
+# Phase 3 - Backlog and sprint management
+
+--------------------------------------------------------------------------
+PHASE 3.1 - Work items
+--------------------------------------------------------------------------
+TYPE     : USER STORY US3.001 : UTORID : NotStarted
+NAME     : Work-item model and backlog
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Stories, tasks, bugs, and subtask work items with clear ownership.
+SO THAT  : Sprint planning can be broken into small PR-sized pieces.
+
+TYPE     : USER STORY US3.002 : UTORID : NotStarted
+NAME     : Work item workflow
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : backlog, ready, in progress, review, and done states.
+SO THAT  : Sprint work can move through a fixed workflow.
+
+--------------------------------------------------------------------------
+PHASE 3.2 - Backlog
+--------------------------------------------------------------------------
+TYPE     : USER STORY US3.003 : UTORID : NotStarted
+NAME     : Backlog create-edit-prioritize flow
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Backlog items to be created, edited, deleted, prioritized, assigned, estimated, and filtered.
+SO THAT  : The team can manage scope inside SprintOps.
+
+TYPE     : USER STORY US3.004 : UTORID : NotStarted
+NAME     : Backlog activity history
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Meaningful field changes to be recorded.
+SO THAT  : Work changes remain auditable.
+
+--------------------------------------------------------------------------
+PHASE 3.3 - Sprints
+--------------------------------------------------------------------------
+TYPE     : USER STORY US3.005 : UTORID : NotStarted
+NAME     : Sprint lifecycle and baseline scope
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Sprint creation, commitment, scope-change tracking, and closeout.
+SO THAT  : The team can run real sprint cycles inside SprintOps.
+
+TYPE     : USER STORY US3.006 : UTORID : NotStarted
+NAME     : Sprint planning and capacity review
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Sprint goals, start dates, end dates, and committed items.
+SO THAT  : Planning is grounded in actual capacity.
+
+--------------------------------------------------------------------------
+PHASE 3.4 - Sprint board
+--------------------------------------------------------------------------
+TYPE     : USER STORY US3.007 : UTORID : NotStarted
+NAME     : Sprint board and status controls
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Board and list views with status transitions.
+SO THAT  : The team can work the sprint visually.
+
+TYPE     : USER STORY US3.008 : UTORID : NotStarted
+NAME     : Blockers and repository-link indicators
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Blockers and evidence indicators on sprint items.
+SO THAT  : The team can see what is at risk.

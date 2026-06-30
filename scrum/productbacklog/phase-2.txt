@@ -1,0 +1,82 @@
+# Phase 2 - Multi-tenant workspace foundation
+# Owner: S
+# Completed by S.
+
+--------------------------------------------------------------------------
+PHASE 2.1 - Relational schema
+--------------------------------------------------------------------------
+TYPE     : USER STORY US2.001 : UTORID : Complete
+NAME     : Profiles, workspaces, memberships, roles, invitations, and projects
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Personal and organization workspaces with memberships and invitations.
+SO THAT  : A single person or a team can use SprintOps.
+
+TYPE     : USER STORY US2.002 : UTORID : Complete
+NAME     : Projects and project members
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Projects to belong to one workspace with optional project membership.
+SO THAT  : Team work stays scoped correctly.
+
+TYPE     : USER STORY US2.003 : UTORID : Complete
+NAME     : Audit records and membership history
+PRIORITY : 2
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Workspace activity to be tracked over time.
+SO THAT  : Changes can be reviewed later.
+
+--------------------------------------------------------------------------
+PHASE 2.2 - Authorization
+--------------------------------------------------------------------------
+TYPE     : USER STORY US2.004 : UTORID : Complete
+NAME     : Workspace authorization and RLS
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Session validation and workspace-scoped access control.
+SO THAT  : One workspace cannot access another workspace.
+
+TYPE     : USER STORY US2.005 : UTORID : Complete
+NAME     : Owner, admin, and member capabilities
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Clear role-based permissions.
+SO THAT  : Workspace actions are constrained correctly.
+
+TYPE     : BUG BUG2.001 : UTORID : Complete
+NAME     : Cross-workspace denial regression
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+ISSUE    : Requests must fail when a user reaches into another workspace.
+
+--------------------------------------------------------------------------
+PHASE 2.3 - Workspace UI
+--------------------------------------------------------------------------
+TYPE     : USER STORY US2.006 : UTORID : Complete
+NAME     : Workspace and project UI
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : UI for workspaces, invitations, members, and projects.
+SO THAT  : Users can manage SprintOps from the desktop app.
+
+TYPE     : USER STORY US2.007 : UTORID : Complete
+NAME     : Personal workspace creation on first login
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : A personal workspace created automatically when the user signs in.
+SO THAT  : Every user starts with a home workspace.
+
+TYPE     : USER STORY US2.008 : UTORID : Complete
+NAME     : Invite, accept, remove, and role-change flows
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Workspace member management in the UI.
+SO THAT  : Teams can collaborate directly.

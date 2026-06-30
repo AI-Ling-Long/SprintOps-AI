@@ -1,0 +1,80 @@
+# Phase 0 - Product and repository alignment
+# Owner: A
+# Completed by A.
+
+--------------------------------------------------------------------------
+PHASE 0.1 - Canonical documentation
+--------------------------------------------------------------------------
+TYPE     : USER STORY US0.001 : UTORID : Complete
+NAME     : Replace obsolete product context
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : product owner
+I WANT   : To remove JobPilot, CodeBattle, and other obsolete product assumptions.
+SO THAT  : SprintOps remains the only source of truth.
+
+TYPE     : USER STORY US0.002 : UTORID : Complete
+NAME     : Define target architecture and data boundaries
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To record the desktop, API, worker, AI, and data boundary rules.
+SO THAT  : The repository follows the intended system shape.
+
+TYPE     : USER STORY US0.003 : UTORID : Complete
+NAME     : Create SprintOps-specific AGENTS guidance
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To keep context files and AGENTS.md synchronized with product decisions.
+SO THAT  : Future work stays traceable and consistent.
+
+--------------------------------------------------------------------------
+PHASE 0.2 - Target workspace decision
+--------------------------------------------------------------------------
+TYPE     : USER STORY US0.004 : UTORID : Complete
+NAME     : Adopt the TypeScript workspace shape
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To establish the target workspace layout without moving unrelated files.
+SO THAT  : The migration stays controlled.
+
+TYPE     : USER STORY US0.005 : UTORID : Complete
+NAME     : Define shared workspace commands
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To have documented lint, typecheck, test, build, and start commands.
+SO THAT  : Contributors can run the repo consistently.
+
+TYPE     : BUG BUG0.001 : UTORID : Complete
+NAME     : Migration context drift
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+ISSUE    : Old product assumptions remain in parts of the documentation and need removal.
+
+--------------------------------------------------------------------------
+PHASE 0.3 - Phase set-up
+--------------------------------------------------------------------------
+TYPE     : USER STORY US0.006 : UTORID : Complete
+NAME     : Define the phase migration issue set
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To record how each future phase will be introduced.
+SO THAT  : The migration order stays clear.
+
+TYPE     : USER STORY US0.007 : UTORID : Complete
+NAME     : Separate prototype from target code
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To distinguish legacy JavaScript prototype code from target TypeScript code.
+SO THAT  : New work lands in the correct place.
+
+TYPE     : BUG BUG0.002 : UTORID : Complete
+NAME     : Old product references in phase notes
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+ISSUE    : Phase notes must refer only to SprintOps and not unrelated products.

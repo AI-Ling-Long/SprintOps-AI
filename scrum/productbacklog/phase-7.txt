@@ -1,0 +1,69 @@
+# Phase 7 - Sprint Risk Agent
+
+--------------------------------------------------------------------------
+PHASE 7.1 - Deterministic tools
+--------------------------------------------------------------------------
+TYPE     : USER STORY US7.001 : UTORID : NotStarted
+NAME     : Sprint state tool
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : The agent to load active sprint state.
+SO THAT  : It can reason from canonical data.
+
+TYPE     : USER STORY US7.002 : UTORID : NotStarted
+NAME     : Repository and work-item evidence tools
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Exact tools for linked repository facts and work items.
+SO THAT  : The agent can cite correct evidence.
+
+--------------------------------------------------------------------------
+PHASE 7.2 - LangGraph workflow
+--------------------------------------------------------------------------
+TYPE     : USER STORY US7.003 : UTORID : NotStarted
+NAME     : Bounded Sprint Risk graph
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : A bounded retrieval and generation graph.
+SO THAT  : Risk findings remain controlled.
+
+TYPE     : USER STORY US7.004 : UTORID : NotStarted
+NAME     : Source validation and missing-information handling
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Claims validated against canonical sources.
+SO THAT  : Unsupported conclusions are rejected.
+
+--------------------------------------------------------------------------
+PHASE 7.3 - Output and approval
+--------------------------------------------------------------------------
+TYPE     : USER STORY US7.005 : UTORID : NotStarted
+NAME     : Evidence-backed sprint briefing output
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Summary, progress, risks, blockers, next actions, and sources.
+SO THAT  : The team can review sprint health.
+
+TYPE     : USER STORY US7.006 : UTORID : NotStarted
+NAME     : Approval flow for proposed mutations
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : AI-proposed changes to require explicit human approval.
+SO THAT  : Sprint data remains authoritative.
+
+--------------------------------------------------------------------------
+PHASE 7.4 - Tracing and evaluation
+--------------------------------------------------------------------------
+TYPE     : USER STORY US7.007 : UTORID : NotStarted
+NAME     : Agent tracing and evaluation dataset
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Traces, usage, and evaluation fixtures stored.
+SO THAT  : Agent quality can be measured over time.

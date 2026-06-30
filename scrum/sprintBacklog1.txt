@@ -1,0 +1,52 @@
+# Sprint 1 Backlog
+# Sprint 1 contains Phase 0 and Phase 1 for SprintOps.
+# A handled Phase 0. S handled Phase 1.
+
+--------------------------------------------------------------------------
+TYPE     : USER STORY US0.001 : UTORID : Complete
+NAME     : Define SprintOps as the sole product
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : product owner
+I WANT   : To remove obsolete product assumptions and keep SprintOps as the only product.
+SO THAT  : All later work stays aligned.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US0.002 : UTORID : Complete
+NAME     : Define the target architecture and data boundaries
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To record the desktop, API, database, AI, and local-data rules.
+SO THAT  : The implementation follows the intended architecture.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US0.003 : UTORID : Complete
+NAME     : Define context and AGENTS guidance
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : To keep context files and AGENTS.md synchronized with SprintOps decisions.
+SO THAT  : Future changes remain traceable.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US1.001 : UTORID : Complete
+NAME     : Integrate the React/Vite desktop renderer
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : A React/Vite renderer powering the active desktop shell.
+SO THAT  : The app runs on the target UI stack.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US1.002 : UTORID : Complete
+NAME     : Add typed IPC contracts
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : Zod-validated IPC contracts and a narrow preload bridge.
+SO THAT  : The renderer stays secure.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US1.003 : UTORID : Complete
+NAME     : Add authenticated API client
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : A session-aware API client in the renderer.
+SO THAT  : The desktop app can talk to the SprintOps API safely.

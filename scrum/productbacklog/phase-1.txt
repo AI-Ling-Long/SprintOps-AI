@@ -1,0 +1,60 @@
+# Phase 1 - Secure desktop foundation
+# Owner: A
+# Completed by A.
+
+--------------------------------------------------------------------------
+PHASE 1.1 - React/Vite renderer integration
+--------------------------------------------------------------------------
+TYPE     : USER STORY US1.001 : UTORID : Complete
+NAME     : Integrate the desktop renderer
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : A React/Vite renderer powering the active desktop shell.
+SO THAT  : The app runs on the target UI stack.
+
+TYPE     : USER STORY US1.002 : UTORID : Complete
+NAME     : Rebuild authentication and shell UI
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : Authentication and application chrome as React components.
+SO THAT  : The desktop app has a real shell.
+
+--------------------------------------------------------------------------
+PHASE 1.2 - Typed IPC bridge
+--------------------------------------------------------------------------
+TYPE     : USER STORY US1.003 : UTORID : Complete
+NAME     : Add typed IPC contracts
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : Zod-validated IPC contracts and a narrow preload bridge.
+SO THAT  : The renderer stays secure.
+
+TYPE     : USER STORY US1.004 : UTORID : Complete
+NAME     : Remove stale bridge naming
+PRIORITY : 2
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : Old `window.jarvis` naming removed.
+SO THAT  : The bridge matches SprintOps.
+
+--------------------------------------------------------------------------
+PHASE 1.3 - Hosted API client
+--------------------------------------------------------------------------
+TYPE     : USER STORY US1.005 : UTORID : Complete
+NAME     : Add authenticated API client
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : A session-aware API client in the renderer.
+SO THAT  : The desktop app can talk to SprintOps API safely.
+
+TYPE     : USER STORY US1.006 : UTORID : Complete
+NAME     : Repair session restoration
+PRIORITY : 1
+ESTIMATE : 1 day    ACTUAL : 1 day
+AS A     : developer
+I WANT   : Supabase sessions to restore correctly after app restart.
+SO THAT  : Users do not have to sign in repeatedly.

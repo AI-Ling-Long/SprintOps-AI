@@ -1,0 +1,58 @@
+# Phase 5 - GitHub integration
+
+--------------------------------------------------------------------------
+PHASE 5.1 - GitHub integration identity
+--------------------------------------------------------------------------
+TYPE     : USER STORY US5.001 : UTORID : NotStarted
+NAME     : GitHub App configuration validation
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : GitHub App configuration to be validated.
+SO THAT  : Repository authorization is durable and scoped.
+
+TYPE     : USER STORY US5.002 : UTORID : NotStarted
+NAME     : Separate sign-in identity from repository authorization
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Supabase GitHub OAuth to stay limited to sign-in identity.
+SO THAT  : GitHub App credentials remain separate.
+
+--------------------------------------------------------------------------
+PHASE 5.2 - Remote activity
+--------------------------------------------------------------------------
+TYPE     : USER STORY US5.003 : UTORID : NotStarted
+NAME     : Pull request ingestion
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Pull-request metadata and review state collected.
+SO THAT  : Sprint items can show review progress.
+
+TYPE     : USER STORY US5.004 : UTORID : NotStarted
+NAME     : Review and CI/check ingestion
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Reviews and CI/check status tracked.
+SO THAT  : The team can see evidence of delivery health.
+
+--------------------------------------------------------------------------
+PHASE 5.3 - Work-item linking
+--------------------------------------------------------------------------
+TYPE     : USER STORY US5.005 : UTORID : NotStarted
+NAME     : Task-key parser and explicit work-item links
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Branch, commit, and pull-request task keys recognized.
+SO THAT  : Repository activity links to SprintOps items.
+
+TYPE     : USER STORY US5.006 : UTORID : NotStarted
+NAME     : Linked activity UI
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Work items to show linked branches, commits, PRs, reviews, and CI.
+SO THAT  : Delivery evidence is visible.

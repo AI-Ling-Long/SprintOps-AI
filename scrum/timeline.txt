@@ -1,0 +1,38 @@
+# SprintOps timeline
+# A completed Phase 0 and Phase 1.
+# S completed Phase 2.
+# Later phases are split between A and S so they can work on separate branches with minimal merge conflicts.
+
+## Branching rule
+
+- A works only in the phases assigned to A.
+- S works only in the phases assigned to S.
+- Split files by phase first, then by feature area inside the phase.
+- Shared files should only be touched by one person at a time.
+
+## Timeline
+
+### A
+
+1. Phase 0.1 to 0.3: product direction, architecture, workspace setup, and migration framing.
+2. Phase 1.1 to 1.3: desktop renderer, IPC bridge, and API client foundation.
+3. Phase 3.1 and Phase 3.2: work-item model and backlog foundation.
+4. Phase 5.1 and Phase 5.2: GitHub App identity and remote activity ingestion.
+5. Phase 7.1 and Phase 7.2: deterministic tools and bounded agent graph.
+6. Phase 8: sprint review and retrospective.
+
+### S
+
+1. Phase 2.1 to 2.3: workspaces, authorization, and workspace UI.
+2. Phase 3.3 and Phase 3.4: sprint lifecycle, board, blockers, and evidence indicators.
+3. Phase 4: local repository integration.
+4. Phase 5.3: work-item linking.
+5. Phase 6: knowledge and indexing pipeline.
+6. Phase 7.3 and Phase 7.4: approval flow, tracing, and evaluation.
+7. Phase 9: production readiness.
+
+## Merge-safety notes
+
+- A and S should never edit the same phase file at the same time.
+- If a phase requires shared edits, split it into separate files before coding.
+- Keep ownership comments at the top of each phase file so merge responsibility is obvious.

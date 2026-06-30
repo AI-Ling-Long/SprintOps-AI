@@ -1,0 +1,28 @@
+# Sprint 2 Backlog
+# Sprint 2 contains Phase 2 for SprintOps.
+# S handled Phase 2.
+
+--------------------------------------------------------------------------
+TYPE     : USER STORY US2.001 : UTORID : Complete
+NAME     : Profiles, workspaces, memberships, roles, invitations, and projects
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Personal and organization workspaces with memberships and invitations.
+SO THAT  : A single person or a team can use SprintOps.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US2.002 : UTORID : Complete
+NAME     : Workspace authorization and RLS
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : Session validation and workspace-scoped access control.
+SO THAT  : One workspace cannot access another workspace.
+--------------------------------------------------------------------------
+TYPE     : USER STORY US2.003 : UTORID : Complete
+NAME     : Workspace and project UI
+PRIORITY : 1
+ESTIMATE : 2 days    ACTUAL : 2 days
+AS A     : developer
+I WANT   : UI for workspaces, invitations, members, and projects.
+SO THAT  : Users can manage SprintOps from the desktop app.

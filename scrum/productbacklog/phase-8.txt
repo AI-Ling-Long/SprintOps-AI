@@ -1,0 +1,18 @@
+# Phase 8 - Sprint review and retrospective
+
+--------------------------------------------------------------------------
+TYPE     : USER STORY US8.001 : UTORID : NotStarted
+NAME     : Sprint outcome comparison
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Baseline-versus-outcome comparison for a sprint.
+SO THAT  : Completion can be reviewed against the original plan.
+
+TYPE     : USER STORY US8.002 : UTORID : NotStarted
+NAME     : Retrospective generation and editing
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : A bounded retrospective workflow with human edits.
+SO THAT  : The team can capture lessons learned.

@@ -1,0 +1,58 @@
+# Phase 6 - Knowledge and indexing pipeline
+
+--------------------------------------------------------------------------
+PHASE 6.1 - Canonical knowledge documents
+--------------------------------------------------------------------------
+TYPE     : USER STORY US6.001 : UTORID : NotStarted
+NAME     : Knowledge-document contracts
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Canonical document formats for work items, check-ins, decisions, and reports.
+SO THAT  : Semantic retrieval has stable inputs.
+
+TYPE     : USER STORY US6.002 : UTORID : NotStarted
+NAME     : Versioned knowledge documents
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Content hashes and indexing status stored for each document version.
+SO THAT  : Re-indexing is deterministic.
+
+--------------------------------------------------------------------------
+PHASE 6.2 - OpenRouter embeddings
+--------------------------------------------------------------------------
+TYPE     : USER STORY US6.003 : UTORID : NotStarted
+NAME     : OpenRouter embedding adapter
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : A LangChain-compatible embedding adapter.
+SO THAT  : SprintOps can create retrieval vectors.
+
+TYPE     : USER STORY US6.004 : UTORID : NotStarted
+NAME     : Embedding dimension validation
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Model and dimension mismatches rejected.
+SO THAT  : Pinecone stays consistent.
+
+--------------------------------------------------------------------------
+PHASE 6.3 - Pinecone indexing
+--------------------------------------------------------------------------
+TYPE     : USER STORY US6.005 : UTORID : NotStarted
+NAME     : Workspace-scoped Pinecone namespaces
+PRIORITY : 1
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : One namespace per workspace and deterministic vector IDs.
+SO THAT  : Retrieval stays scoped and updateable.
+
+TYPE     : USER STORY US6.006 : UTORID : NotStarted
+NAME     : Indexing, deletion, and reconciliation jobs
+PRIORITY : 2
+ESTIMATE : (1 day, 2 days, 4 days)    ACTUAL :
+AS A     : developer
+I WANT   : Rebuild, delete, and reconcile Pinecone entries.
+SO THAT  : Retrieval stays in sync with PostgreSQL.
