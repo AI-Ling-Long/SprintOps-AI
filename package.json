@@ -2,14 +2,25 @@
   "name": "sprintops-ai",
   "version": "0.1.0",
   "description": "SprintOps AI desktop assistant",
-  "main": "src/main.js",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19"
   },
   "scripts": {
-    "start": "electron .",
-    "dev": "electron . --inspect",
+    "start": "npm run start --workspace @sprintops/desktop",
+    "dev": "npm run dev --workspace @sprintops/desktop",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
     "server": "node server/server.js",
+    "api": "npm run start --workspace @sprintops/api",
+    "dev:api": "npm run dev --workspace @sprintops/api",
+    "db:migrate": "npm run db:migrate --workspace @sprintops/db",
     "db:push": "drizzle-kit push --config server/drizzle.config.js"
   },
   "keywords": [
@@ -20,8 +31,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "drizzle-kit": "^0.31.10",
-    "electron": "^35.0.0"
+    "drizzle-kit": "^0.31.10"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.106.1",
